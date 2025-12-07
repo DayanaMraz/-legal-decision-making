@@ -20,6 +20,8 @@ A comprehensive FHEVM example demonstrating privacy-preserving jury voting for l
 - [Advanced Patterns](#advanced-patterns)
 - [Competition Requirements Compliance](#competition-requirements-compliance)
 - [Demo & Documentation](#demo--documentation)
+- [Demo Video Digital Court - the future of legal decision-maki.mp4 ](https://streamable.com/16y4yc)
+- [Live Demo](https://legal-decision-making.vercel.app/)
 
 ---
 
@@ -246,7 +248,7 @@ uint32 guiltyVotes = FHE.decrypt(legalCase.encryptedGuiltyVotes);
 
 ```bash
 # Clone the repository
-git clone https://github.com/YourUsername/DigitalCourt.git
+git clone https://github.com/DayanaMraz/-legal-decision-making.git
 cd DigitalCourt
 
 # Install dependencies
@@ -1049,7 +1051,7 @@ event VoteCast(uint256 indexed caseId, address indexed juror, uint256 timestamp)
 | **Documentation** | Multi-level docs (this file, inline comments) | `*.md`, contract comments |
 | **FHEVM concepts** | Access control, encryption, decryption, homomorphic ops | See [FHEVM Concepts](#fhevm-concepts-demonstrated) |
 | **GitBook compatible** | Markdown format with proper structure | This file |
-| **Demo video** | 1-minute walkthrough | `DigitalCourt.mp4`, `VIDEO_SCRIPT.md` |
+| **Demo video** | 1-minute walkthrough | `Digital Court - the future of legal decision-maki.mp4`, `VIDEO_SCRIPT.md` |
 
 ### FHEVM Concepts Coverage
 
@@ -1079,7 +1081,7 @@ event VoteCast(uint256 indexed caseId, address indexed juror, uint256 timestamp)
 
 ### Live Demo
 
-**Website**: [https://digital-court.vercel.app/](https://digital-court.vercel.app/)
+**Website**: [https://legal-decision-making.vercel.app/](https://legal-decision-making.vercel.app/)
 
 **Features**:
 - Wallet connection (MetaMask)
@@ -1091,7 +1093,7 @@ event VoteCast(uint256 indexed caseId, address indexed juror, uint256 timestamp)
 
 ### Video Demonstration
 
-**File**: `DigitalCourt.mp4` (1 minute)
+**File**: `Digital Court - the future of legal decision-maki.mp4` (1 minute)
 
 **Content**:
 - System overview (0:00-0:12)
@@ -1110,7 +1112,7 @@ event VoteCast(uint256 indexed caseId, address indexed juror, uint256 timestamp)
 
 ### Source Code
 
-**GitHub**: [https://github.com/DayanaMraz/DigitalCourt](https://github.com/DayanaMraz/DigitalCourt)
+**GitHub**: [https://github.com/DayanaMraz/-legal-decision-making](https://github.com/DayanaMraz/-legal-decision-making)
 
 **License**: MIT
 
@@ -1214,7 +1216,7 @@ A: Submit issues and pull requests on GitHub. Key areas: test coverage, document
 ## Contact & Support
 
 **Developer**: Digital Court Team
-**GitHub**: [https://github.com/DayanaMraz/DigitalCourt](https://github.com/DayanaMraz/DigitalCourt)
+**GitHub**: [https://github.com/DayanaMraz/-legal-decision-making](https://github.com/DayanaMraz/-legal-decision-making)
 **Email**: support@digitalcourt.example (replace with actual contact)
 **Twitter**: @DigitalCourtFHE (replace with actual handle)
 
