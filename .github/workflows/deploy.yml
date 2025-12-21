@@ -1,0 +1,60 @@
+name: Deploy to Testnet
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'contracts/**'
+      - 'hardhat.config.js'
+      - 'scripts/deploy.js'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Contracts
+    runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile contracts
+        run: npx hardhat compile
+
+      - name: Run tests before deployment
+        run: npm test
+        env:
+          HARDHAT_NETWORK: hardhat
+
+      - name: Deploy to Sepolia Testnet
+        run: npx hardhat run scripts/deploy.js --network sepolia
+        env:
+          SEPOLIA_PRIVATE_KEY: ${{ secrets.SEPOLIA_PRIVATE_KEY }}
+          SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+        if: github.event_name == 'push'
+        continue-on-error: true
+
+      - name: Deploy to Zama Devnet
+        run: npx hardhat run scripts/deploy.js --network zama
+        env:
+          ZAMA_PRIVATE_KEY: ${{ secrets.ZAMA_PRIVATE_KEY }}
+          ZAMA_RPC_URL: https://devnet.zama.ai
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-artifacts
+          path: artifacts/
+        if: always()
