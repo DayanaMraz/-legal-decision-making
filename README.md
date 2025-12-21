@@ -20,7 +20,7 @@ A comprehensive FHEVM example demonstrating privacy-preserving jury voting for l
 - [Advanced Patterns](#advanced-patterns)
 - [Competition Requirements Compliance](#competition-requirements-compliance)
 - [Demo & Documentation](#demo--documentation)
-- [Demo Video Digital Court - the future of legal decision-maki.mp4 ](https://streamable.com/16y4yc)
+- [Demo Video Digital Court - the future of legal decision-maki.mp4 ](https://youtu.be/MqMssh9v9LQ)
 - [Live Demo](https://legal-decision-making.vercel.app/)
 
 ---
