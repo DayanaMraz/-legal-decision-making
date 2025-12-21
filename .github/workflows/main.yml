@@ -1,1 +1,125 @@
+name: CI/CD Pipeline
 
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and Test (Node ${{ matrix.node-version }} on ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Prettier check
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20.x'
+        run: npm run prettier:check
+
+      - name: Run ESLint
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20.x'
+        run: npm run lint:ts
+
+      - name: Run Solhint
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20.x'
+        run: npm run lint:sol
+
+      - name: Compile contracts
+        run: npm run hardhat:compile
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Generate coverage report
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20.x'
+        run: npm run coverage
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20.x'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+          verbose: true
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+  deployment-check:
+    name: Deployment Scripts Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify deployment scripts exist
+        run: |
+          test -f scripts/deploy.js
+          test -f scripts/verify.js
+          test -f scripts/interact.js
+          test -f scripts/simulate.js
+          echo "All deployment scripts found"
+
+      - name: Check hardhat config
+        run: |
+          test -f hardhat.config.js
+          echo "Hardhat configuration found"
