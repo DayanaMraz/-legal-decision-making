@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🧪 Running pre-push checks..."
+
+# Run all tests
+echo "🧪 Running tests..."
+npm test || exit 1
+
+# Run gas analysis
+echo "⛽ Analyzing gas usage..."
+npm run gas:analyze
+
+# Run performance tests
+echo "⚡ Running performance tests..."
+node scripts/performance-test.js || exit 1
+
+echo "✅ Pre-push checks passed!"
